@@ -6,8 +6,7 @@
   <title>La Utopía</title>
   <style>
     body {
-      background-color: #000; /* fondo negro */
-      color: #FFD700; /* dorado */
+      background-color: #000; 
       font-family: 'Arial', sans-serif;
       display: flex;
       flex-direction: column;
@@ -16,29 +15,88 @@
       height: 100vh;
       margin: 0;
       text-align: center;
+      color: #c9a23f; /* dorado más cálido */
     }
 
     h1 {
-      font-size: 2.2em;
-      color: #FFD700;
-      text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500, 0 0 40px #FFD700;
-      margin-bottom: 20px;
+      font-size: 2.5em;
+      color: #c9a23f;
+      text-shadow: 0 0 10px #c9a23f, 0 0 25px #8b6b2e;
+      animation: latido 2s infinite alternate;
     }
 
     p {
-      font-size: 1.1em;
-      max-width: 600px;
+      font-size: 1.2em;
+      max-width: 700px;
       line-height: 1.6;
-      color: #FFD700;
-      text-shadow: 0 0 8px #FFD700;
+      margin-bottom: 30px;
+      color: #d4af37; /* dorado clásico */
+      text-shadow: 0 0 5px #8b6b2e;
+    }
+
+    @keyframes latido {
+      from { text-shadow: 0 0 10px #c9a23f; }
+      to { text-shadow: 0 0 25px #ffd700, 0 0 50px #c9a23f; }
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #000;
+      background: linear-gradient(90deg, #ffd700, #c9a23f);
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 0 15px #c9a23f;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 30px #ffd700;
+      transform: scale(1.05);
+    }
+
+    #countdown {
+      margin-top: 40px;
+      font-size: 1.5em;
+      color: #ffd700;
+      text-shadow: 0 0 15px #8b6b2e;
     }
   </style>
 </head>
 <body>
-  <h1>¿Estás buscando la utopía?</h1>
+  <h1>¿Estás buscando una <br><a href="https://tu-link-aqui.com" class="btn">UTOPÍA</a>?</h1>
   <p>
     ¡No busques más! En el Aula de 3B al final del pasillo en el segundo piso,  
     encontrarás el verdadero futuro, la verdadera utopía.
   </p>
+
+  <div id="countdown"></div>
+
+  <script>
+    // Fecha objetivo: 23 de octubre
+    var targetDate = new Date("Oct 23, 2025 00:00:00").getTime();
+
+    var countdown = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = targetDate - now;
+
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML =
+        "Faltan " + days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+
+      if (distance < 0) {
+        clearInterval(countdown);
+        document.getElementById("countdown").innerHTML = "¡La utopía ya llegó!";
+      }
+    }, 1000);
+  </script>
 </body>
 </html>
