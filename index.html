@@ -19,7 +19,7 @@
 
     h1 {
       font-size: 2.5em;
-      color: #DAA520; /* dorado más cálido */
+      color: #DAA520;
       text-shadow: 0 0 15px #DAA520, 0 0 25px #FFD700, 0 0 40px #DAA520;
       animation: brillo 2s infinite alternate;
     }
@@ -77,32 +77,42 @@
     encontrarás el verdadero futuro, la verdadera utopía.
   </p>
 
-  <a class="btn" href="https://future-classroom-chronicles.lovable.app/">Entrar a la Utopía</a>
+  <a class="btn" href="https://future-classroom-chronicles.lovable.app/" target="_blank">Entrar</a>
 
   <div id="contador"></div>
 
   <footer>3ro B - 2025</footer>
 
+  <!-- 🎵 Audio de fondo -->
+  <audio id="bgMusic" src="intro.m4a" autoplay loop></audio>
+
   <script>
-    // Contador hasta el 23 de octubre 2025
-    const fechaObjetivo = new Date("Oct 23, 2025 00:00:00").getTime();
-    const contador = document.getElementById("contador");
+    // 🔄 Contador regresivo hasta el 23 de octubre
+    const targetDate = new Date("2025-10-23T00:00:00").getTime();
+    const counter = document.getElementById("contador");
 
     setInterval(() => {
-      const ahora = new Date().getTime();
-      const distancia = fechaObjetivo - ahora;
+      const now = new Date().getTime();
+      const distance = targetDate - now;
 
-      if (distancia > 0) {
-        const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
-        const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
-
-        contador.innerHTML = `Faltan ${dias}d ${horas}h ${minutos}m ${segundos}s`;
-      } else {
-        contador.innerHTML = "¡La utopía llegó!";
+      if (distance < 0) {
+        counter.innerHTML = "¡El día llegó!";
+        return;
       }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      counter.innerHTML = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s`;
     }, 1000);
+
+    // 🎶 Autoplay en algunos navegadores necesita interacción
+    document.addEventListener('click', () => {
+      const audio = document.getElementById('bgMusic');
+      if (audio.paused) audio.play();
+    });
   </script>
 </body>
 </html>
