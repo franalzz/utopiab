@@ -3,100 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Utopía</title>
+  <title>Utopía</title>
   <style>
     body {
       background-color: #000;
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
+      color: #d4af37; /* dorado más suave */
+      font-family: "Poppins", sans-serif;
       text-align: center;
+      padding: 60px;
+      overflow-x: hidden;
     }
 
     h1 {
-      font-size: 2.5em;
-      color: #DAA520;
-      text-shadow: 0 0 15px #DAA520, 0 0 25px #FFD700, 0 0 40px #DAA520;
-      animation: brillo 2s infinite alternate;
+      font-size: 3em;
+      animation: fadeIn 2s ease-in-out;
     }
 
     p {
-      font-size: 1.2em;
-      max-width: 600px;
-      line-height: 1.6;
-      color: #DAA520;
-      text-shadow: 0 0 8px #FFD700;
-      animation: brillo 4s infinite alternate;
+      font-size: 1.3em;
+      animation: fadeIn 3s ease-in-out;
     }
 
-    @keyframes brillo {
-      from { text-shadow: 0 0 10px #FFD700; }
-      to { text-shadow: 0 0 25px #DAA520, 0 0 50px #FFD700; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1.1em;
-      color: #DAA520;
-      background: none;
-      border: 2px solid #DAA520;
-      border-radius: 8px;
-      cursor: pointer;
+    a.button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 30px;
+      border: 2px solid #d4af37;
+      color: #d4af37;
       text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
       transition: all 0.3s ease;
     }
 
-    .btn:hover {
+    a.button:hover {
+      background-color: #d4af37;
       color: #000;
-      background: #DAA520;
-      box-shadow: 0 0 15px #FFD700;
+      transform: scale(1.05);
     }
 
-    #contador {
-      margin-top: 40px;
-      font-size: 1em;
-      color: #FFD700;
+    #countdown {
+      margin-top: 60px;
+      font-size: 1.2em;
     }
 
     footer {
-      margin-top: 20px;
-      font-size: 0.8em;
+      margin-top: 40px;
+      font-size: 0.9em;
       color: #888;
     }
   </style>
 </head>
 <body>
-  <h1>¿Estás buscando una <span style="color:#FFD700;">UTOPÍA</span>?</h1>
-  <p>
-    ¡No busques más! En el Aula de 3B al final del pasillo en el segundo piso,  
-    encontrarás el verdadero futuro, la verdadera utopía.
-  </p>
+  <h1>Estás buscando una <span style="color:#ffde59;">UTOPÍA</span></h1>
+  <p>El camino apenas comienza...</p>
 
-  <a class="btn" href="https://future-classroom-chronicles.lovable.app/" target="_blank">Entrar</a>
+  <a class="button" href="https://future-classroom-chronicles.lovable.app/" target="_blank">Ir a Utopía</a>
 
-  <div id="contador"></div>
+  <div id="countdown"></div>
 
   <footer>3ro B - 2025</footer>
 
-  <!-- 🎵 Audio de fondo -->
-  <audio id="bgMusic" src="intro.m4a" autoplay loop></audio>
+  <!-- 🎵 Música de fondo -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="intro.m4a" type="audio/mp4">
+    Tu navegador no soporta audio.
+  </audio>
 
   <script>
-    // 🔄 Contador regresivo hasta el 23 de octubre
-    const targetDate = new Date("2025-10-23T00:00:00").getTime();
-    const counter = document.getElementById("contador");
+    // 🕒 Contador regresivo hasta el 23 de octubre
+    const countdown = document.getElementById("countdown");
+    const targetDate = new Date("October 23, 2025 00:00:00").getTime();
 
     setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDate - now;
 
       if (distance < 0) {
-        counter.innerHTML = "¡El día llegó!";
+        countdown.innerHTML = "¡Llegó el día!";
         return;
       }
 
@@ -105,13 +94,15 @@
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      counter.innerHTML = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      countdown.innerHTML = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s`;
     }, 1000);
 
-    // 🎶 Autoplay en algunos navegadores necesita interacción
-    document.addEventListener('click', () => {
-      const audio = document.getElementById('bgMusic');
-      if (audio.paused) audio.play();
+    // 🔊 Reproducir audio cuando el usuario hace clic (autoplay bloqueado por navegadores)
+    document.addEventListener("click", () => {
+      const audio = document.getElementById("bgMusic");
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      }
     });
   </script>
 </body>
