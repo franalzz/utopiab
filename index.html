@@ -3,120 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Future Classroom Chronicles</title>
+  <title>La Utopía</title>
   <style>
     body {
-      background-color: #0d0d0d;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
+      background-color: #000;
+      font-family: 'Arial', sans-serif;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      text-align: center;
       overflow: hidden;
     }
 
     h1 {
-      font-size: 3em;
-      color: #FFD700;
-      text-shadow: 0 0 10px #FFD700;
-      animation: glow 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #FFD700; }
-      to { text-shadow: 0 0 25px #FFEA00, 0 0 50px #FFD700; }
+      font-size: 2.5em;
+      color: #DAA520; /* dorado elegante */
+      text-shadow: 0 0 15px #DAA520, 0 0 25px #FFD700, 0 0 40px #DAA520;
+      animation: brillo 2s infinite alternate;
     }
 
     p {
-      margin-top: 10px;
       font-size: 1.2em;
+      max-width: 600px;
+      line-height: 1.6;
+      color: #DAA520;
+      text-shadow: 0 0 8px #FFD700;
+      animation: brillo 4s infinite alternate;
     }
 
-    button {
-      margin-top: 30px;
+    @keyframes brillo {
+      from { text-shadow: 0 0 10px #FFD700; }
+      to { text-shadow: 0 0 25px #DAA520, 0 0 50px #FFD700; }
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.1em;
+      color: #DAA520;
       background: none;
-      border: 2px solid #FFD700;
-      color: #FFD700;
-      padding: 12px 28px;
-      font-size: 1.3em;
-      border-radius: 10px;
+      border: 2px solid #DAA520;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.3s;
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
 
-    button:hover {
-      background-color: #FFD700;
-      color: #0d0d0d;
-      transform: scale(1.05);
+    .btn:hover {
+      color: #000;
+      background: #DAA520;
+      box-shadow: 0 0 15px #FFD700;
     }
 
-    #countdown {
-      position: absolute;
-      bottom: 60px;
-      font-size: 1.2em;
-      color: #cccccc;
+    #contador {
+      margin-top: 40px;
+      font-size: 1em;
+      color: #FFD700;
     }
 
     footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9em;
+      margin-top: 20px;
+      font-size: 0.8em;
       color: #888;
+    }
+
+    #mensajeClick {
+      position: absolute;
+      bottom: 120px;
+      font-size: 1em;
+      color: #FFD700;
+      opacity: 0.8;
+      animation: parpadeo 1.5s infinite;
+    }
+
+    @keyframes parpadeo {
+      0% { opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { opacity: 0.2; }
     }
   </style>
 </head>
 <body>
 
-  <h1>Estás buscando una <span style="color:#FFD700;">UTOPIA</span></h1>
-  <p>Entrá al futuro...</p>
+  <h1>¿Estás buscando una <span style="color:#FFD700;">UTOPÍA</span>?</h1>
+  <p>
+    ¡No busques más! En el Aula de 3B al final del pasillo en el segundo piso,  
+    encontrarás el verdadero futuro, la verdadera utopía.
+  </p>
 
-  <button id="goButton">UTOPIA</button>
+  <a class="btn" href="https://franalzz.github.io/utopiab/">Entrar</a>
 
-  <div id="countdown"></div>
+  <div id="mensajeClick">🎵 Tocá para entrar a la experiencia 🎵</div>
+  <div id="contador"></div>
+
   <footer>3ro B - 2025</footer>
 
+  <!-- Audio -->
   <audio id="bgMusic" loop>
     <source src="audio.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
   <script>
-    // Música de fondo
-    const audio = document.getElementById("bgMusic");
+    // Reproduce el audio tras el primer toque
     document.addEventListener("click", () => {
+      const audio = document.getElementById("bgMusic");
+      const mensaje = document.getElementById("mensajeClick");
       if (audio.paused) {
         audio.play().catch(() => {});
+        mensaje.style.display = "none"; // Oculta el mensaje después del primer toque
       }
     });
 
-    // Botón que redirige a la página
-    document.getElementById("goButton").addEventListener("click", () => {
-      window.location.href = "https://future-classroom-chronicles.lovable.app/";
-    });
-
-    // Contador hasta el 23 de octubre
-    const countdown = document.getElementById("countdown");
-    const targetDate = new Date("2025-10-23T00:00:00").getTime();
+    // Contador hasta el 23 de octubre de 2025
+    const contador = document.getElementById("contador");
+    const fechaObjetivo = new Date("2025-10-23T00:00:00").getTime();
 
     setInterval(() => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
+      const ahora = new Date().getTime();
+      const diferencia = fechaObjetivo - ahora;
 
-      if (distance <= 0) {
-        countdown.innerHTML = "¡Llegó el día!";
+      if (diferencia <= 0) {
+        contador.innerHTML = "¡Llegó el día!";
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
 
-      countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      contador.innerHTML = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
     }, 1000);
   </script>
 
