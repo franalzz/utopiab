@@ -3,88 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Utopía</title>
+  <title>Future Classroom Chronicles</title>
   <style>
     body {
-      background-color: #000;
-      color: #d4af37; /* dorado más suave */
-      font-family: "Poppins", sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+      font-family: 'Poppins', sans-serif;
       text-align: center;
-      padding: 60px;
-      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
     }
 
     h1 {
       font-size: 3em;
-      animation: fadeIn 2s ease-in-out;
+      color: #FFD700;
+      text-shadow: 0 0 10px #FFD700;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #FFD700; }
+      to { text-shadow: 0 0 25px #FFEA00, 0 0 50px #FFD700; }
     }
 
     p {
-      font-size: 1.3em;
-      animation: fadeIn 3s ease-in-out;
+      margin-top: 10px;
+      font-size: 1.2em;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    a.button {
-      display: inline-block;
+    button {
       margin-top: 30px;
-      padding: 12px 30px;
-      border: 2px solid #d4af37;
-      color: #d4af37;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 8px;
-      transition: all 0.3s ease;
+      background: none;
+      border: 2px solid #FFD700;
+      color: #FFD700;
+      padding: 12px 28px;
+      font-size: 1.3em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
     }
 
-    a.button:hover {
-      background-color: #d4af37;
-      color: #000;
+    button:hover {
+      background-color: #FFD700;
+      color: #0d0d0d;
       transform: scale(1.05);
     }
 
     #countdown {
-      margin-top: 60px;
+      position: absolute;
+      bottom: 60px;
       font-size: 1.2em;
+      color: #cccccc;
     }
 
     footer {
-      margin-top: 40px;
+      position: absolute;
+      bottom: 20px;
       font-size: 0.9em;
       color: #888;
     }
   </style>
 </head>
 <body>
-  <h1>Estás buscando una <span style="color:#ffde59;">UTOPÍA</span></h1>
-  <p>El camino apenas comienza...</p>
 
-  <a class="button" href="https://future-classroom-chronicles.lovable.app/" target="_blank">Ir a Utopía</a>
+  <h1>Estás buscando una <span style="color:#FFD700;">UTOPIA</span></h1>
+  <p>Entrá al futuro...</p>
+
+  <button id="goButton">UTOPIA</button>
 
   <div id="countdown"></div>
-
   <footer>3ro B - 2025</footer>
 
-  <!-- 🎵 Música de fondo -->
-  <audio id="bgMusic" autoplay loop>
-    <source src="intro.m4a" type="audio/mp4">
+  <audio id="bgMusic" loop>
+    <source src="audio.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
   <script>
-    // 🕒 Contador regresivo hasta el 23 de octubre
+    // Música de fondo
+    const audio = document.getElementById("bgMusic");
+    document.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      }
+    });
+
+    // Botón que redirige a la página
+    document.getElementById("goButton").addEventListener("click", () => {
+      window.location.href = "https://future-classroom-chronicles.lovable.app/";
+    });
+
+    // Contador hasta el 23 de octubre
     const countdown = document.getElementById("countdown");
-    const targetDate = new Date("October 23, 2025 00:00:00").getTime();
+    const targetDate = new Date("2025-10-23T00:00:00").getTime();
 
     setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDate - now;
 
-      if (distance < 0) {
+      if (distance <= 0) {
         countdown.innerHTML = "¡Llegó el día!";
         return;
       }
@@ -94,16 +116,9 @@
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      countdown.innerHTML = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }, 1000);
-
-    // 🔊 Reproducir audio cuando el usuario hace clic (autoplay bloqueado por navegadores)
-    document.addEventListener("click", () => {
-      const audio = document.getElementById("bgMusic");
-      if (audio.paused) {
-        audio.play().catch(() => {});
-      }
-    });
   </script>
+
 </body>
 </html>
