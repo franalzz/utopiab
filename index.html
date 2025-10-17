@@ -15,12 +15,11 @@
       min-height: 100vh;
       margin: 0;
       text-align: center;
-      overflow: hidden;
     }
 
     h1 {
       font-size: 2.5em;
-      color: #DAA520;
+      color: #DAA520; /* dorado elegante */
       text-shadow: 0 0 15px #DAA520, 0 0 25px #FFD700, 0 0 40px #DAA520;
       animation: brillo 2s infinite alternate;
     }
@@ -69,85 +68,39 @@
       font-size: 0.8em;
       color: #888;
     }
-
-    #mensajeClick {
-      position: absolute;
-      bottom: 120px;
-      font-size: 1em;
-      color: #FFD700;
-      opacity: 0.8;
-      animation: parpadeo 1.5s infinite;
-    }
-
-    @keyframes parpadeo {
-      0% { opacity: 0.2; }
-      50% { opacity: 1; }
-      100% { opacity: 0.2; }
-    }
   </style>
 </head>
 <body>
-
   <h1>¿Estás buscando una <span style="color:#FFD700;">UTOPÍA</span>?</h1>
   <p>
     ¡No busques más! En el Aula de 3B al final del pasillo en el segundo piso,  
     encontrarás el verdadero futuro, la verdadera utopía.
   </p>
 
-  <button class="btn" id="btnUtopia">Entrar</button>
+  <a class="btn" id="boton-entrar" href="https://future-classroom-chronicles.lovable.app/">Entrar</a>
 
-  <div id="mensajeClick">🎵 Tocá para entrar a la experiencia 🎵</div>
-  <div id="contador"></div>
+  <audio id="musica" src="tu-archivo.mp3" preload="auto"></audio>
 
-  <footer>3ro B - 2025</footer>
+  <div id="contador">23 días restantes...</div>
 
-  <!-- Audio -->
-  <audio id="bgMusic" loop>
-    <source src="audio.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
-  </audio>
+  <footer>La Utopía © 2025</footer>
 
   <script>
-    const audio = document.getElementById("bgMusic");
-    const mensaje = document.getElementById("mensajeClick");
-    const boton = document.getElementById("btnUtopia");
+    const boton = document.getElementById('boton-entrar');
+    const musica = document.getElementById('musica');
     let primerClick = true;
 
-    // Manejo de clics en el botón
-    boton.addEventListener("click", () => {
+    boton.addEventListener('click', function(event) {
       if (primerClick) {
-        // Primer click: activa música y oculta mensaje
-        audio.play().catch(() => {});
-        mensaje.style.display = "none";
+        event.preventDefault(); // Evita ir al enlace la primera vez
+        musica.play().catch(err => console.log("Error al reproducir:", err));
+        boton.textContent = "Entrar (ahora sí)";
         primerClick = false;
-        boton.innerText = "Entrar (ahora sí)";
       } else {
-        // Segundo click: redirige
-        window.location.href = "https://future-classroom-chronicles.lovable.app/";
+        // En el segundo click redirige
+        window.location.href = boton.href;
       }
     });
-
-    // Contador hasta el 23 de octubre de 2025
-    const contador = document.getElementById("contador");
-    const fechaObjetivo = new Date("2025-10-23T00:00:00").getTime();
-
-    setInterval(() => {
-      const ahora = new Date().getTime();
-      const diferencia = fechaObjetivo - ahora;
-
-      if (diferencia <= 0) {
-        contador.innerHTML = "¡Llegó el día!";
-        return;
-      }
-
-      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-      const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-      contador.innerHTML = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
-    }, 1000);
   </script>
-
 </body>
 </html>
