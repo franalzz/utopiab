@@ -20,7 +20,7 @@
 
     h1 {
       font-size: 2.5em;
-      color: #DAA520; /* dorado elegante */
+      color: #DAA520;
       text-shadow: 0 0 15px #DAA520, 0 0 25px #FFD700, 0 0 40px #DAA520;
       animation: brillo 2s infinite alternate;
     }
@@ -94,7 +94,7 @@
     encontrarás el verdadero futuro, la verdadera utopía.
   </p>
 
-  <a class="btn" href="https://future-classroom-chronicles.lovable.app/">Entrar</a>
+  <button class="btn" id="btnUtopia">Entrar</button>
 
   <div id="mensajeClick">🎵 Tocá para entrar a la experiencia 🎵</div>
   <div id="contador"></div>
@@ -103,18 +103,27 @@
 
   <!-- Audio -->
   <audio id="bgMusic" loop>
-    <source src="intro.m4a" type="audio/mpeg">
+    <source src="audio.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
   <script>
-    // Reproduce el audio tras el primer toque
-    document.addEventListener("click", () => {
-      const audio = document.getElementById("bgMusic");
-      const mensaje = document.getElementById("mensajeClick");
-      if (audio.paused) {
+    const audio = document.getElementById("bgMusic");
+    const mensaje = document.getElementById("mensajeClick");
+    const boton = document.getElementById("btnUtopia");
+    let primerClick = true;
+
+    // Manejo de clics en el botón
+    boton.addEventListener("click", () => {
+      if (primerClick) {
+        // Primer click: activa música y oculta mensaje
         audio.play().catch(() => {});
-        mensaje.style.display = "none"; // Oculta el mensaje después del primer toque
+        mensaje.style.display = "none";
+        primerClick = false;
+        boton.innerText = "Entrar (ahora sí)";
+      } else {
+        // Segundo click: redirige
+        window.location.href = "https://franalzz.github.io/utopiab/";
       }
     });
 
