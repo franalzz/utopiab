@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>La Utopía</title>
   <style>
     body {
@@ -15,6 +15,7 @@
       min-height: 100vh;
       margin: 0;
       text-align: center;
+      overflow: hidden;
     }
 
     h1 {
@@ -22,15 +23,17 @@
       color: #DAA520;
       text-shadow: 0 0 15px #DAA520, 0 0 25px #FFD700, 0 0 40px #DAA520;
       animation: brillo 2s infinite alternate;
+      margin: 0 20px;
     }
 
     p {
-      font-size: 1.2em;
-      max-width: 600px;
+      font-size: 1.15em;
+      max-width: 640px;
       line-height: 1.6;
       color: #DAA520;
       text-shadow: 0 0 8px #FFD700;
       animation: brillo 4s infinite alternate;
+      margin: 14px 20px;
     }
 
     @keyframes brillo {
@@ -39,16 +42,17 @@
     }
 
     .btn {
-      margin-top: 25px;
-      padding: 12px 25px;
-      font-size: 1.1em;
+      margin-top: 20px;
+      padding: 12px 26px;
+      font-size: 1.05em;
       color: #DAA520;
       background: none;
       border: 2px solid #DAA520;
       border-radius: 8px;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
+      display: inline-block;
     }
 
     .btn:hover {
@@ -57,75 +61,131 @@
       box-shadow: 0 0 15px #FFD700;
     }
 
+    #mensajeClick {
+      margin-top: 18px;
+      color: #FFD700;
+      opacity: 0.9;
+      animation: parpadeo 1.5s infinite;
+    }
+
+    @keyframes parpadeo {
+      0% { opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
+
     #contador {
-      margin-top: 40px;
+      margin-top: 36px;
       font-size: 1em;
       color: #FFD700;
       text-shadow: 0 0 10px #DAA520;
     }
 
     footer {
-      margin-top: 25px;
-      font-size: 0.8em;
-      color: #777;
+      margin-top: 22px;
+      font-size: 0.85em;
+      color: #888;
     }
   </style>
 </head>
 <body>
+
   <h1>¿Estás buscando una <span style="color:#FFD700;">UTOPÍA</span>?</h1>
+
   <p>
     ¡No busques más! En el Aula de 3B al final del pasillo en el segundo piso,<br>
     encontrarás el verdadero futuro, la verdadera utopía.
   </p>
 
-  <a class="btn" id="boton-entrar" href="https://future-classroom-chronicles.lovable.app/">Entrar</a>
+  <!-- Botón: primer click activa audio, segundo click redirige -->
+  <a id="boton-entrar" class="btn" href="https://future-classroom-chronicles.lovable.app/">Entrar</a>
 
-  <audio id="musica" src="intro.m4a" preload="auto" loop></audio>
+  <div id="mensajeClick">🎵 Tocá el botón una vez para activar la experiencia 🎵</div>
 
   <div id="contador"></div>
 
   <footer>3ro B - 2025</footer>
 
+  <!-- AUDIO: poné tu archivo (ej: audio.mp3) en la misma carpeta -->
+  <audio id="musica" src="intro.m4a" preload="auto" loop></audio>
+
   <script>
-    // --- BOTÓN Y MÚSICA ---
+    // === Configuración ===
+    const targetUrl = "https://future-classroom-chronicles.lovable.app/";
     const boton = document.getElementById('boton-entrar');
     const musica = document.getElementById('musica');
+    const mensaje = document.getElementById('mensajeClick');
     let primerClick = true;
 
+    // Evitar que al tocar el enlace se vaya en el primer click
     boton.addEventListener('click', function(event) {
       if (primerClick) {
-        event.preventDefault();
-        musica.play().catch(err => console.log("Error al reproducir:", err));
+        event.preventDefault();       // evita navegación
+        event.stopPropagation();
+        // Intentamos reproducir audio (promesa)
+        musica.play().then(() => {
+          // audio empezó
+        }).catch((err) => {
+          // si falla (política autoplay), quedó en pausa hasta interacción
+          console.log("play() falló:", err);
+        });
+        // feedback visual
         boton.textContent = "Entrar (ahora sí)";
         boton.style.boxShadow = "0 0 15px #FFD700";
+        mensaje.style.display = "none";
         primerClick = false;
+        return false;
       } else {
-        window.location.href = boton.href;
+        // segundo click: redirige al target
+        // usamos window.location para asegurar navegación
+        window.location.href = targetUrl;
       }
     });
 
-    // --- CONTADOR HASTA EL 23 DE OCTUBRE ---
-    function actualizarContador() {
-      const fechaObjetivo = new Date("2025-10-23T00:00:00");
-      const ahora = new Date();
-      const diferencia = fechaObjetivo - ahora;
+    // También permitir iniciar audio si el usuario toca cualquier parte (opcional)
+    // Esto ayuda si el usuario toca fuera del botón: activa la experiencia igual.
+    document.addEventListener('click', function startAudioAnywhere() {
+      if (primerClick) {
+        musica.play().catch(()=>{});
+        mensaje.style.display = "none";
+        boton.textContent = "Entrar (ahora sí)";
+        boton.style.boxShadow = "0 0 15px #FFD700";
+        primerClick = false;
+      }
+      // removemos el listener secundario para que no interfiera
+      document.removeEventListener('click', startAudioAnywhere);
+    }, { once: true });
 
-      if (diferencia <= 0) {
-        document.getElementById("contador").textContent = "¡El día ha llegado!";
+    // === Contador hasta 23 de octubre de 2025 ===
+    function actualizarContador() {
+      const ahora = new Date();
+      const objetivo = new Date("2025-10-23T00:00:00");
+      let diff = objetivo - ahora;
+
+      const contEl = document.getElementById('contador');
+      if (diff <= 0) {
+        contEl.textContent = "¡Llegó el día!";
         return;
       }
 
-      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
-      const segundos = Math.floor((diferencia / 1000) % 60);
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= dias * (1000 * 60 * 60 * 24);
 
-      document.getElementById("contador").textContent =
-        `${dias}d ${horas}h ${minutos}m ${segundos}s para el 23 de octubre`;
+      const horas = Math.floor(diff / (1000 * 60 * 60));
+      diff -= horas * (1000 * 60 * 60);
+
+      const minutos = Math.floor(diff / (1000 * 60));
+      diff -= minutos * (1000 * 60);
+
+      const segundos = Math.floor(diff / 1000);
+
+      contEl.textContent = `${dias}d ${horas}h ${minutos}m ${segundos}s para el 23 de octubre`;
     }
 
-    setInterval(actualizarContador, 1000);
+    // arrancar contador inmediatamente y actualizar cada segundo
     actualizarContador();
+    setInterval(actualizarContador, 1000);
   </script>
+
 </body>
 </html>
