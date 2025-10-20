@@ -19,7 +19,7 @@
 
     h1 {
       font-size: 2.5em;
-      color: #DAA520; /* dorado elegante */
+      color: #DAA520;
       text-shadow: 0 0 15px #DAA520, 0 0 25px #FFD700, 0 0 40px #DAA520;
       animation: brillo 2s infinite alternate;
     }
@@ -39,8 +39,8 @@
     }
 
     .btn {
-      margin-top: 20px;
-      padding: 10px 20px;
+      margin-top: 25px;
+      padding: 12px 25px;
       font-size: 1.1em;
       color: #DAA520;
       background: none;
@@ -61,29 +61,71 @@
       margin-top: 40px;
       font-size: 1em;
       color: #FFD700;
+      text-shadow: 0 0 10px #DAA520;
     }
 
     footer {
-      margin-top: 20px;
+      margin-top: 25px;
       font-size: 0.8em;
-      color: #888;
+      color: #777;
     }
   </style>
 </head>
 <body>
   <h1>¿Estás buscando una <span style="color:#FFD700;">UTOPÍA</span>?</h1>
   <p>
-    ¡No busques más! En el Aula de 3B al final del pasillo en el segundo piso,  
+    ¡No busques más! En el Aula de 3B al final del pasillo en el segundo piso,<br>
     encontrarás el verdadero futuro, la verdadera utopía.
   </p>
 
   <a class="btn" id="boton-entrar" href="https://future-classroom-chronicles.lovable.app/">Entrar</a>
 
-  <audio id="musica" src="tu-archivo.mp3" preload="auto" loop></audio>
+  <audio id="musica" src="intro.m4a" preload="auto" loop></audio>
 
   <div id="contador"></div>
 
   <footer>3ro B - 2025</footer>
 
   <script>
-    //
+    // --- BOTÓN Y MÚSICA ---
+    const boton = document.getElementById('boton-entrar');
+    const musica = document.getElementById('musica');
+    let primerClick = true;
+
+    boton.addEventListener('click', function(event) {
+      if (primerClick) {
+        event.preventDefault();
+        musica.play().catch(err => console.log("Error al reproducir:", err));
+        boton.textContent = "Entrar (ahora sí)";
+        boton.style.boxShadow = "0 0 15px #FFD700";
+        primerClick = false;
+      } else {
+        window.location.href = boton.href;
+      }
+    });
+
+    // --- CONTADOR HASTA EL 23 DE OCTUBRE ---
+    function actualizarContador() {
+      const fechaObjetivo = new Date("2025-10-23T00:00:00");
+      const ahora = new Date();
+      const diferencia = fechaObjetivo - ahora;
+
+      if (diferencia <= 0) {
+        document.getElementById("contador").textContent = "¡El día ha llegado!";
+        return;
+      }
+
+      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+      const segundos = Math.floor((diferencia / 1000) % 60);
+
+      document.getElementById("contador").textContent =
+        `${dias}d ${horas}h ${minutos}m ${segundos}s para el 23 de octubre`;
+    }
+
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
+  </script>
+</body>
+</html>
