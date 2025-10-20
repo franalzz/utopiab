@@ -79,28 +79,11 @@
 
   <a class="btn" id="boton-entrar" href="https://future-classroom-chronicles.lovable.app/">Entrar</a>
 
-  <audio id="musica" src="tu-archivo.mp3" preload="auto"></audio>
+  <audio id="musica" src="tu-archivo.mp3" preload="auto" loop></audio>
 
-  <div id="contador">23 días restantes...</div>
+  <div id="contador"></div>
 
-  <footer>La Utopía © 2025</footer>
+  <footer>3ro B - 2025</footer>
 
   <script>
-    const boton = document.getElementById('boton-entrar');
-    const musica = document.getElementById('musica');
-    let primerClick = true;
-
-    boton.addEventListener('click', function(event) {
-      if (primerClick) {
-        event.preventDefault(); // Evita ir al enlace la primera vez
-        musica.play().catch(err => console.log("Error al reproducir:", err));
-        boton.textContent = "Entrar (ahora sí)";
-        primerClick = false;
-      } else {
-        // En el segundo click redirige
-        window.location.href = boton.href;
-      }
-    });
-  </script>
-</body>
-</html>
+    //
